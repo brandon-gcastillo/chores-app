@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
     View,
     Text,
@@ -7,30 +7,24 @@ import {
     Platform
 } from 'react-native';
 
-// Font Loading
-import { useFonts } from 'expo-font';
-
 // Components
-import Loading from '../components/Loading';
 import Logo from '../components/Logo';
 import EmailInput from '../components/EmailInput';
 import PasswordInput from '../components/PasswordInput';
 import BottomWaves from '../components/BottomWaves';
+
+// API Calls
+import getUsers from '../api/getUsers';
 
 // Styles
 import loginStyles from '../styles/LoginScreen';
 
 const Login = () => {
 
-    const [ loadFonts ] = useFonts({
-        Cairo: require("../assets/fonts/cairo.ttf"),
-        Montserrat: require("../assets/fonts/montserrat.ttf")
-    })
+    // useEffect(() => {
+    //     getUsers();
+    // }, [])
     
-    if (!loadFonts) {
-        return <Loading />;
-    }
-
     return (
         <View style={loginStyles.loginContainer}>
             <Logo resizeMode="contain" styleClass={loginStyles.logoContainer} />
@@ -43,8 +37,8 @@ const Login = () => {
             <View style={loginStyles.inputContainer}>
                 {
                     Platform.OS == 'web' ?
-                        <Button title='Iniciar Sesion' color='#676DFF' onPress={() => alert("Button pressed!")}/> :
-                        <Button title='Iniciar Sesion' color='#676DFF' onPress={() => Alert.alert("Button pressed!")}/>
+                        <Button title='Iniciar Sesion' color='#676DFF' onPress={() => alert("Hola!")}/> :
+                        <Button title='Iniciar Sesion' color='#676DFF' onPress={() => getUsers()}/>
                 }
             </View>
             <View style={loginStyles.creatAccountContainer}>
