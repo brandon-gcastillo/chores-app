@@ -13,7 +13,7 @@ import { useFonts } from 'expo-font';
 
 // Components
 import Loading from './components/Loading';
-// import Login from './screens/Login';
+import CreateAccount from './screens/CreateAccount';
 import Login from './screens/LoginV2';
 
 // Navigation Stack Initializer
@@ -27,8 +27,8 @@ const Home = ({navigation}) => (
       </Card.Content>
     </Card>
     <Button
-      title="Go to Details... again"
-      onPress={() => navigation.navigate('Home')}
+      title="Go to Create Account Screen... again"
+      onPress={() => navigation.push("CreateAccount")}
       style={{backgroundColor: "#000fff"}}
       />
   </View>
@@ -46,9 +46,10 @@ export default function App() {
 
   return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="CreateAccount">
           <Stack.Screen name="Login" component={Login}/>
           <Stack.Screen name="Home" component={Home}/>
+          <Stack.Screen name="CreateAccount" component={CreateAccount} options={{title: "Crear Cuenta", headerShown: false}}/>
         </Stack.Navigator>
       </NavigationContainer>
   );

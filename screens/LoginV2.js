@@ -16,10 +16,17 @@ import authenticateUser from '../api/loginAccount'
 
 const Login = ({navigation}) => {
 
+    const loginDetails = {
+        data: {
+            message: ""
+        },
+        statusValue: ""
+    }
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const [loginStatus, setLoginStatus] = useState({})
+    const [loginStatus, setLoginStatus] = useState(loginDetails)
 
     // TODO: Test the API to login
     // TODO: Apply a Snackbar or errors on inputs when the values entered are wrong
@@ -36,7 +43,7 @@ const Login = ({navigation}) => {
                 behavior={Platform.OS === "ios" ? "padding": "height"}
             >
                 <TextInput
-                    label="Usuario"
+                    label="Correo"
                     value={email}
                     onChangeText={currentText => setEmail(currentText)}
                     style={styles.textInput}
