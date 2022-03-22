@@ -35,13 +35,17 @@ const Home = ({navigation}) => (
 )
 
 export default function App() {
-  const [ loadFonts ] = useFonts({
-      Cairo: require("./assets/fonts/cairo.ttf"),
-      Montserrat: require("./assets/fonts/montserrat.ttf")
+  
+  let [ fontsLoaded ] = useFonts({
+      "Cairo": require("./assets/fonts/cairo.ttf"),
+      "Montserrat": require("./assets/fonts/montserrat-variable.ttf"),
+      'Montserrat-semiBold': require('./assets/fonts/montserrat-semiBold.ttf')
   });
 
-  if (!loadFonts) {
+  if (!fontsLoaded) {
     return <Loading />;
+  } else {
+    console.log(`Fonts Loaded: ${fontsLoaded}`)
   }
 
   return (

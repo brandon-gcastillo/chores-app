@@ -6,29 +6,119 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
+  ScrollView,
+  Alert
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TextInput, Card, Title, Paragraph } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 
-const CreateAccount = () => {
+import Banner from "../components/Banner";
+import inputStyles from "../styles/InputStyles";
+import Loading from "../components/Loading";
+
+// API Call to Create a New Account
+import CreateAccountAPI from "../api/CreateAccount";
+
+
+const CreateAccount = ({ navigation }) => {
 
   const accountDetails = {
     username: "",
     email: "",
     password: "",
-    passwordConfirmation: ""
+    password_confirmation: ""
   };
+
+  const fieldErrors = {
+    username: true,
+    email: true,
+    password: true,
+    password_confirmation: true
+  }
 
   const [account, setAccount] = useState(accountDetails);
 
-  const [confirmEmail, setConfirmEmail] = useState("");
+  const [secureEntryPass, setSecureEntryPass] = useState(true)
 
-  const handleTextchange = (name, value) => {
-      setAccount({
-          ...account,
-          [name]: value
-      })
+  const [secureEntryPassConfirm, setSecureEntryPassConfirm] = useState(true);
+
+  const [formErrors, setFormErrors] = useState(fieldErrors);
+
+  const [loading, setLoading] = useState(false);
+
+  const validateField = (name, text) => {
+    console.log(name)
+    switch (name) {
+      case 'username':
+        if (text != '') {
+          setAccount({ ...account, [name]: text })
+          setFormErrors({ ...formErrors, [name]: false })
+        } else {
+          setAccount({ ...account, [name]: text })
+          setFormErrors({ ...formErrors, [name]: true })
+        }
+        break;
+      case 'email':
+        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+        if (reg.test(text) == true) {
+          setAccount({ ...account, [name]: text })
+          setFormErrors({ ...formErrors, [name]: false })
+        } else {
+          setAccount({ ...account, [name]: text })
+          setFormErrors({ ...formErrors, [name]: true })
+        }
+        break;
+      case 'password':
+        if (text === account.password_confirmation || text != '') {
+          setAccount({ ...account, [name]: text })
+          setFormErrors({ ...formErrors, [name]: false })
+        } else {
+          setAccount({ ...account, [name]: text })
+          setFormErrors({ ...formErrors, [name]: true })
+        }
+        break;
+      case 'password_confirmation':
+        if (text === account.password || text != '') {
+          setAccount({ ...account, [name]: text })
+          setFormErrors({ ...formErrors, [name]: false })
+        } else {
+          setAccount({ ...account, [name]: text })
+          setFormErrors({ ...formErrors, [name]: true })
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  const validateForm = async () => {
+    let accountErrors = Object.values(formErrors);
+    const formHasErrors = accountErrors.some(value => value == true);
+
+    console.log("Errores ", accountErrors);
+    console.log(formHasErrors)
+
+    if (account.password != account.password_confirmation) {
+      return Alert.alert(null, 'Verifica que las contraseñas coincidan.')
+    } else if (formHasErrors) {
+      return Alert.alert(null, 'Verifica los campos del formulario nuevamente.')
+    } else {
+      try {
+        setLoading(true);
+        await CreateAccountAPI(account);
+        setAccount(accountDetails);
+        setFormErrors(fieldErrors)
+        setLoading(false);
+        navigation.navigate('Home');
+      } catch(err) {
+        console.log(err);
+      }
+    }
+  }
+
+  if (loading) {
+    return <Loading />
   }
 
   return (
@@ -36,61 +126,62 @@ const CreateAccount = () => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <Card style={{ padding: 15, elevation: 4 }}>
-          <Card.Content>
-            <Title style={{ marginBottom: 20 }}>Registrate</Title>
+        <ScrollView showsHorizontalScrollIndicator={false}>
+          <Banner />
+          <View style={{ marginHorizontal: 25 }}>
+            <Text style={{ marginBottom: 20, fontFamily: "Montserrat-semiBold", fontSize: 21 }}>Registrate</Text>
+
             <TextInput
               label="Usuario"
               value={account.username}
               autoCapitalize="none"
               textContentType="username"
-              style={styles.textInput}
-              onChangeText={(currentText) => handleTextchange('username', currentText)}
+              style={inputStyles.textInput}
+              onChangeText={(currentText) => validateField('username', currentText)}
+              left={<TextInput.Icon name='account' />}
             />
+
             <TextInput
               label="Correo"
               value={account.email}
               autoCapitalize="none"
               textContentType="emailAddress"
-              style={styles.textInput}
-              onChangeText={(currentText) => handleTextchange('email', currentText)}
+              style={inputStyles.textInput}
+              onChangeText={(currentText) => validateField('email', currentText)}
+              left={<TextInput.Icon name='email' />}
             />
+
             <TextInput
               label="Contraseña"
-              value={account.password}
+              value={inputStyles.password}
               autoCapitalize="none"
               textContentType="newPassword"
-              style={styles.textInput}
-              secureTextEntry={true}
-              onChangeText={(currentText) => handleTextchange('password', currentText)}
+              style={inputStyles.textInput}
+              secureTextEntry={secureEntryPass}
+              onChangeText={(currentText) => validateField('password', currentText)}
+              right={<TextInput.Icon name="eye" onPressOut={() => setSecureEntryPass(!secureEntryPass)} onPressIn={() => setSecureEntryPass(!secureEntryPass)} forceTextInputFocus={false} />}
             />
+
             <TextInput
               label="Confirmar Contraseña"
-              value={account.passwordConfirmation}
+              value={account.password_confirmation}
               autoCapitalize="none"
               textContentType="newPassword"
-              style={styles.textInput}
-              secureTextEntry={true}
-              onChangeText={(currentText) => handleTextchange('passwordConfirmation', currentText)}
+              style={inputStyles.textInput}
+              secureTextEntry={secureEntryPassConfirm}
+              onChangeText={(currentText) => validateField('password_confirmation', currentText)}
+              right={<TextInput.Icon name="eye" onPressOut={() => setSecureEntryPassConfirm(!secureEntryPassConfirm)} onPressIn={() => setSecureEntryPassConfirm(!secureEntryPassConfirm)} forceTextInputFocus={false} />}
             />
+
             <TouchableOpacity
-              style={styles.buttonStyles}
-              onPress={() => console.log("button pressed!")}
+              style={inputStyles.buttonStyles}
+              onPress={() => validateForm()}
             >
-              <Text style={styles.textStyles}>Entrar</Text>
+              <Text style={inputStyles.textStyles}>Entrar</Text>
             </TouchableOpacity>
-          </Card.Content>
-        </Card>
-        <Card style={{ marginTop: 15, padding: 15 }}>
-          <Card.Content>
-            <Title>Results</Title>
-            <Paragraph>
-              Correo: {account.email} {"\n"}
-              Confirmacion de Correo: {confirmEmail} {"\n"}
-              Password: {account.password} {"\n"}
-            </Paragraph>
-          </Card.Content>
-        </Card>
+
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -99,24 +190,9 @@ const CreateAccount = () => {
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
-    padding: 15,
-    fontFamily: "Montserrat",
-    justifyContent: "space-around",
-  },
-  textInput: {
-    marginBottom: 15,
-  },
-  buttonStyles: {
-    alignItems: "center",
-    backgroundColor: "#6b6bff",
-    padding: 10,
-    borderRadius: 4,
-    width: 150,
-  },
-  textStyles: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
+    justifyContent: "flex-start",
+    backgroundColor: '#FFFCFC'
+  }
 });
 
 export default CreateAccount;
