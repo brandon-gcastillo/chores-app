@@ -15,24 +15,11 @@ import { useFonts } from 'expo-font';
 import Loading from './components/Loading';
 import CreateAccount from './screens/CreateAccount';
 import Login from './screens/Login';
+import Home from './screens/Home';
+import Tabs from './navigation/tabs';
 
 // Navigation Stack Initializer
 const Stack = createNativeStackNavigator();
-
-const Home = ({navigation}) => (
-  <View style={{flex: 1, justifyContent: "center", padding: 24}}>
-    <Card style={{marginBottom: 20}}>
-      <Card.Content>
-        <Title>Home Screen</Title>
-      </Card.Content>
-    </Card>
-    <Button
-      title="Go to Create Account Screen... again"
-      onPress={() => navigation.push("CreateAccount")}
-      style={{backgroundColor: "#000fff"}}
-      />
-  </View>
-)
 
 export default function App() {
   
@@ -51,10 +38,10 @@ export default function App() {
   return (
       <NavigationContainer>
         <Stack.Navigator 
-          initialRouteName="Login"
+          initialRouteName="Tabs"
           screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login}/>
-          <Stack.Screen name="Home" component={Home}/>
+          <Stack.Screen name="Tabs" component={Tabs}/>
           <Stack.Screen name="CreateAccount" component={CreateAccount} options={{title: "Crear Cuenta", headerShown: false}}/>
         </Stack.Navigator>
       </NavigationContainer>
