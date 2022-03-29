@@ -110,7 +110,7 @@ const CreateAccount = ({ navigation }) => {
         setAccount(accountDetails);
         setFormErrors(fieldErrors)
         setLoading(false);
-        navigation.navigate('Home');
+        navigation.navigate('Tabs');
       } catch (err) {
         console.log(err);
       }

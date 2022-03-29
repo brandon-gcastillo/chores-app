@@ -62,7 +62,7 @@ const Login = ({ navigation }) => {
                 setLoading(true);
                 setUserAccount(userDetails);
                 setLoading(false)
-                navigation.navigate('Home');
+                navigation.navigate('Tabs');
             }
         } catch (error) {
             console.log(error);
