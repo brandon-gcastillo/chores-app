@@ -2,7 +2,7 @@
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
-const URI = "http://fathomless-woodland-31379.herokuapp.com/sessions";
+const URI = "https://fathomless-woodland-31379.herokuapp.com/sessions";
 
 const authenticateUser = async (emailValue, passwordValue) => {
 
