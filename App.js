@@ -14,7 +14,7 @@ import { useFonts } from 'expo-font';
 // Components
 import Loading from './components/Loading';
 import CreateAccount from './screens/CreateAccount';
-import Login from './screens/LoginV2';
+import Login from './screens/Login';
 
 // Navigation Stack Initializer
 const Stack = createNativeStackNavigator();
@@ -50,11 +50,13 @@ export default function App() {
 
   return (
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="CreateAccount">
+        <Stack.Navigator 
+          initialRouteName="Login"
+          screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login}/>
           <Stack.Screen name="Home" component={Home}/>
           <Stack.Screen name="CreateAccount" component={CreateAccount} options={{title: "Crear Cuenta", headerShown: false}}/>
         </Stack.Navigator>
       </NavigationContainer>
-  );
+  ); 
 };

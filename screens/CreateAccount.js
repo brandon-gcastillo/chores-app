@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -111,7 +111,7 @@ const CreateAccount = ({ navigation }) => {
         setFormErrors(fieldErrors)
         setLoading(false);
         navigation.navigate('Home');
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     }
@@ -126,7 +126,7 @@ const CreateAccount = ({ navigation }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <ScrollView showsHorizontalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Banner />
           <View style={{ marginHorizontal: 25 }}>
             <Text style={{ marginBottom: 20, fontFamily: "Montserrat-semiBold", fontSize: 21 }}>Registrate</Text>

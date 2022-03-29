@@ -1,52 +1,137 @@
-import React, { useEffect } from 'react';
-import { 
+import React, { useState, useEffect } from 'react';
+import {
     View,
     Text,
-    Button,
-    Alert,
-    Platform
+    StyleSheet,
+    KeyboardAvoidingView,
+    Platform,
+    TouchableOpacity,
+    ScrollView,
+    Alert
 } from 'react-native';
 
-// Components
-import Logo from '../components/Logo';
-import EmailInput from '../components/EmailInput';
-import PasswordInput from '../components/PasswordInput';
-import BottomWaves from '../components/BottomWaves';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { TextInput } from 'react-native-paper';
 
-// API Calls
-import getUsers from '../api/getUsers';
+// Banner, Styles and Loading Screen
+import Banner from "../components/Banner";
+import inputStyles from "../styles/InputStyles";
+import Loading from "../components/Loading";
 
-// Styles
-import loginStyles from '../styles/LoginScreen';
+// Login Account API Call
+import authenticateUser from '../api/LoginAccount';
 
-const Login = () => {
+const Login = ({ navigation }) => {
 
-    // useEffect(() => {
-    //     getUsers();
-    // }, [])
-    
-    return (
-        <View style={loginStyles.loginContainer}>
-            <Logo resizeMode="contain" styleClass={loginStyles.logoContainer} />
-            <View>
-                <EmailInput textStyle={loginStyles.textStyle} textInputStyle={loginStyles.textInputStyle}/>
-            </View>
-            <View style={loginStyles.inputContainer}>
-                <PasswordInput textStyle={loginStyles.textStyle} textInputStyle={loginStyles.textInputStyle} />
-            </View>
-            <View style={loginStyles.inputContainer}>
-                {
-                    Platform.OS == 'web' ?
-                        <Button title='Iniciar Sesion' color='#676DFF' onPress={() => alert("Hola!")}/> :
-                        <Button title='Iniciar Sesion' color='#676DFF' onPress={() => getUsers()}/>
-                }
-            </View>
-            <View style={loginStyles.creatAccountContainer}>
-                <Text style={loginStyles.createAccountText}>Crea una cuenta</Text>
-            </View>
-            <BottomWaves />
-        </View>
+    const userDetails = {
+        email: '',
+        password: ''
+    }
+
+    const [userAccount, setUserAccount] = useState(userDetails);
+
+    const [loading, setLoading] = useState(false);
+
+    const handleTextChange = (inputName, value) => (
+        setUserAccount({
+            ...userAccount,
+            [inputName]: value
+        })
     );
-};
+
+    const [secureEntryPass, setSecureEntryPass] = useState(true);
+
+    const submitForm = async () => {
+        try {
+            const { statusValue, data } = await authenticateUser(userAccount.email, userAccount.password);
+
+            const loginError = statusValue === 400 || statusValue !== 200 && data.message !== "Login successful" ? true : false;
+
+            if (loginError) {
+                Alert.alert(
+                    "Inicio de Sesión incorrecto",
+                    'Vuelve a iniciar sesión.',
+                    [
+                        {
+                            text: 'Ok',
+                            onPress: () => console.log('')
+                        }
+                    ]
+                )
+            } else {
+                setLoading(true);
+                setUserAccount(userDetails);
+                setLoading(false)
+                navigation.navigate('Home');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    if (loading) {
+        return <Loading />
+    }
+
+    return (
+        <SafeAreaView style={styles.screenContainer}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    {/* Banner  */}
+                    <Banner />
+                    {/* Form Fields */}
+                    <View style={styles.formMargin}>
+                        <Text style={styles.formTitle}>
+                            Inicia Sesión
+                        </Text>
+                        <TextInput
+                            label='Correo Electrónico'
+                            value={userAccount.email}
+                            autoCapitalize='none'
+                            textContentType='emailAddress'
+                            style={inputStyles.textInput}
+                            onChangeText={(currentText) => handleTextChange('email', currentText)}
+                            left={<TextInput.Icon name='email' />}
+                        />
+                        <TextInput
+                            label="Contraseña"
+                            style={inputStyles.textInput}
+                            autoCapitalize="none"
+                            textContentType="password"
+                            secureTextEntry={secureEntryPass}
+                            value={inputStyles.password}
+                            onChangeText={(currentText) => handleTextChange('password', currentText)}
+                            right={<TextInput.Icon name="eye" onPressOut={() => setSecureEntryPass(!secureEntryPass)} onPressIn={() => setSecureEntryPass(!secureEntryPass)} forceTextInputFocus={false} />}
+                        />
+
+                        <TouchableOpacity
+                            style={inputStyles.buttonStyles}
+                            onPress={() => submitForm()}>
+                            <Text style={inputStyles.textStyles}>Entrar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
+    )
+
+}
+
+const styles = StyleSheet.create({
+    screenContainer: {
+        flex: 1,
+        justifyContent: "flex-start",
+        backgroundColor: '#FFFCFC'
+    },
+    formMargin: {
+        marginHorizontal: 25
+    },
+    formTitle: {
+        marginBottom: 20,
+        fontFamily: "Montserrat-semiBold",
+        fontSize: 21
+    }
+});
 
 export default Login;
