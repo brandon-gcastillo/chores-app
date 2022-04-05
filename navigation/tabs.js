@@ -2,28 +2,32 @@ import React from 'react';
 import {
     View,
     Image,
-    TouchableOpacity
+    Text,
+    StatusBar
 } from 'react-native';
 
 // Tabs Component
-import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { getHeaderTitle } from '@react-navigation/elements';
 
-import { Home, TaskScreen} from '../screens/Home';
+import Home from '../screens/Home';
+import HabitsScreen from '../screens/Habits';
 import { COLORS, icons } from '../constants'
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => (
+    
     <Tab.Navigator
         screenOptions={{
-            headerShown: false
-            }}
-            sceneContainerStyle={{backgroundColor: 'none'}}>
-        <Tab.Screen 
-            name='Home' 
+            tabBarShowLabel: false,
+        }}
+    >
+        <Tab.Screen
+            name='Home'
             component={Home}
             options={{
-                tabBarIcon: ({focused}) => (
+                tabBarIcon: ({ focused }) => (
                     <Image
                         source={icons.tabs.home}
                         resizeMode='contain'
@@ -33,23 +37,47 @@ const Tabs = () => (
                             tintColor: focused ? COLORS.btn_tab_primary : COLORS.btn_disabled
                         }}
                     />
-                )
-            }}/>
+                ),
+                header: ({ navigation, route, options, back }) => {
+
+                    const title = getHeaderTitle(options, route.name);
+
+                    return (
+                        <>
+                            <StatusBar backgroundColor={COLORS.primary} />
+                            <View
+                                style={{
+                                    alignItems: 'center',
+                                    backgroundColor: COLORS.primary,
+                                    padding: 15
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontSize: 21,
+                                        fontWeight: 'bold'
+                                    }}
+                                >{title}</Text>
+                            </View>
+                        </>
+                    )
+                }
+            }} />
         <Tab.Screen
             name='Task Screen'
-            component={TaskScreen}
+            component={HabitsScreen}
             options={{
-                tabBarIcon: ({focused}) => (
+                tabBarIcon: ({ focused }) => (
                     <Image
                         source={icons.tabs.tasks}
                         resizeMode='contain'
                         style={{
-                            width: 35,
-                            height: 35,
+                            width: 30,
+                            height: 30,
                             tintColor: focused ? COLORS.btn_tab_primary : COLORS.btn_disabled
-                        }}/>
+                        }} />
                 )
-            }}/>
+            }} />
     </Tab.Navigator>
 )
 
