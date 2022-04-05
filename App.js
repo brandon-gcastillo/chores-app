@@ -3,11 +3,6 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-// Native components
-import { View, Button } from 'react-native';
-
-import { Card, Title } from 'react-native-paper';
-
 // Font Loading
 import { useFonts } from 'expo-font';
 
@@ -15,7 +10,6 @@ import { useFonts } from 'expo-font';
 import Loading from './components/Loading';
 import CreateAccount from './screens/CreateAccount';
 import Login from './screens/Login';
-import Home from './screens/Home';
 import Tabs from './navigation/tabs';
 
 // Navigation Stack Initializer
