@@ -9,6 +9,7 @@ import {
 import { Card } from 'react-native-paper';
 
 import { COLORS } from '../../constants';
+import Constants from 'expo-constants';
 
 const DATA = [
     {
@@ -83,7 +84,7 @@ const GROUPS = [
 ]
 
 const Group = ({ groupName, labelLastMessage, lastMessage }) => (
-    <Card style={{elevation: 2, marginBottom: 10}}>
+    <Card style={{ elevation: 2, marginBottom: 10 }}>
         <Card.Content style={{ flexDirection: 'row', alignItems: 'center' }}>
             <View
                 style={{
@@ -150,15 +151,15 @@ const Home = ({ navigation }) => {
                         />
                     </View>
                 </View>
-                <View style={styles.sectionContaier}>
+                <View style={{paddingBottom: 70, ...styles.sectionContaier}}>
                     <View style={styles.cardLabel}><Text style={styles.cardLabelText}>Comunidades</Text></View>
                     <View style={styles.quickItemsContainer}>
                         {
                             GROUPS.map((item) => {
-                                return(
-                                    <Group 
-                                        key={item.id} 
-                                        groupName={item.groupName} 
+                                return (
+                                    <Group
+                                        key={item.id}
+                                        groupName={item.groupName}
                                         labelLastMessage={item.labelLastMessage}
                                         lastMessage={item.lastMessage}
                                     />
@@ -175,7 +176,8 @@ const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
     appContainer: {
         flex: 1,
-        fontFamily: 'Montserrat'
+        fontFamily: 'Montserrat',
+        paddingTop: Constants.statusBarHeight
     },
     sectionContaier: {
         paddingTop: 10

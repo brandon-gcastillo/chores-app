@@ -6,7 +6,10 @@ const COLORS = {
     btn_disabled: '#BEBEBE',
     headerTopBar: '#FFCB50',
     white: "#fafafa",
-    textGray: "#212121"
+    black: "#000",
+    greenMidTone: "#489088",
+    textGray: "#202121",
+    bluePill: "#3A66FF",
 }
 
 export default COLORS;
