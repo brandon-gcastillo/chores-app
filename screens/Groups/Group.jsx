@@ -106,14 +106,16 @@ const ACTIVITIES = [
     }
 ]
 
-const Activities = ({ title, description, createdBy, alignmentStyles, navigation }) => {
+const Activities = ({ navigation, activity, alignmentStyles }) => {
+
+    const { title, description, createdBy } = activity;
 
     const initials = createdBy.split(' ')
     const initialsFormat = initials[0][0] + initials[1][0];
 
     return (
         <View style={alignmentStyles}>
-            <TouchableNativeFeedback onPress={() => navigation.push('Activity')}>
+            <TouchableNativeFeedback onPress={() => navigation.push('Activity', activity)}>
                 <View style={styles.activityInnerCard}>
                     <View style={styles.thumbnailContainer}>
                         <Text style={styles.thumbnailContainer.text}>
@@ -196,9 +198,7 @@ const GroupScreen = ({navigation}) => {
                             return (
                                 <Activities
                                     key={activity.id}
-                                    title={activity.title}
-                                    description={activity.description}
-                                    createdBy={activity.createdBy}
+                                    activity={activity}
                                     alignmentStyles={[styles.activityCardContainer, {
                                         alignSelf: checkIndexIsEven(index) ? 'flex-start' : 'flex-end'
                                     }]}
@@ -210,7 +210,7 @@ const GroupScreen = ({navigation}) => {
                 </View>
             </ScrollView>
             <View style={styles.publishBtn.wrapper}>
-                <TouchableNativeFeedback onPress={() => Alert.alert("hi!")}>
+                <TouchableNativeFeedback onPress={() => navigation.navigate('NewActivity')}>
                     <View style={styles.publishBtn}>
                         <Image
                             source={icons.groupScreen.editPencil}

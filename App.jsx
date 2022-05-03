@@ -13,6 +13,7 @@ import Login from './screens/Login';
 import Tabs from './navigation/tabs';
 import Activity from './screens/Activity';
 import Group from './screens/Groups/Group';
+import NewActivity from './screens/Activity/NewActivity';
 
 // Fonts
 import { FONTS } from './constants'; 
@@ -41,6 +42,7 @@ export default function App() {
             <Stack.Screen name="CreateAccount" component={CreateAccount} options={{title: "Crear Cuenta"}}/>
             <Stack.Screen name='Group' component={Group} options={{headerShown: true}}/>
             <Stack.Screen name='Activity' component={Activity} options={{headerShown: true}}/>
+            <Stack.Screen name='NewActivity' component={NewActivity} options={{headerShown: true}}/>
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

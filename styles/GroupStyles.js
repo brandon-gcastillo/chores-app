@@ -129,6 +129,7 @@ export const GroupStyles = {
             marginHorizontal: 0, 
             alignSelf: 'center', 
             borderRadius: 50, 
+            elevation: 3,
             overflow: 'hidden' 
         }
     }
