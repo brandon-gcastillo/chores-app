@@ -3,7 +3,8 @@ import {
     View,
     Image,
     Text,
-    StyleSheet
+    StyleSheet,
+    Pressable
 } from 'react-native';
 
 // Tabs Component
@@ -51,7 +52,7 @@ const CustomHeader = (props) => {
     )
 }
 
-const Tabs = () => {
+const Tabs = ({navigation}) => {
 
     return (
         <Tab.Navigator
@@ -59,7 +60,7 @@ const Tabs = () => {
                 tabBarShowLabel: false,
                 tabBarStyle: {
                     position: 'absolute',
-                    bottom: 20,
+                    bottom: 15,
                     left: 20,
                     right: 20,
                     borderRadius: 15,
@@ -67,11 +68,10 @@ const Tabs = () => {
                     height: 70,
                     ...styles.shadow,
                 },
-                header: ({ navigation, route, options }) => <CustomHeader route={route} options={options} />
             }}
         >
             <Tab.Screen name='Home' component={Home} options={{
-                headerShown: false,
+                headerTitle: "Inicio",
                 tabBarIcon: ({ focused }) => (
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <Image
@@ -115,56 +115,16 @@ const Tabs = () => {
                                 Groups
                             </Text>
                         </View>
-                    )
-                }}
-            />
-            <Tab.Screen
-                name='MyHabits'
-                component={MyHabits}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <Image
-                                source={icons.tabs.habits}
-                                resizeMode="contain"
-                                style={{
-                                    width: 26,
-                                    height: 26,
-                                    tintColor: focused ? COLORS.btn_tab_primary : COLORS.btn_disabled
-                                }}
-                            />
-                            <Text
-                                style={{
-                                    color: focused ? COLORS.btn_tab_primary : COLORS.btn_disabled, fontSize: 12
-                                }}>
-                                My Habits
-                            </Text>
-                        </View>
                     ),
-                    title: "My Progress"
-                }}
-            />
-            <Tab.Screen
-                name='Settings'
-                component={Settings}
-                options={{
-                    tabBarIcon: ({ focused }) => (
-                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <Image
-                                source={icons.tabs.settings}
-                                resizeMode="contain"
-                                style={{
-                                    width: 28,
-                                    height: 28,
-                                    tintColor: focused ? COLORS.btn_tab_primary : COLORS.btn_disabled
-                                }}
-                            />
-                            <Text
-                                style={{
-                                    color: focused ? COLORS.btn_tab_primary : COLORS.btn_disabled, fontSize: 12
-                                }}>
-                                Settings
-                            </Text>
+                    headerRight: () => (
+                        <View style={{paddingRight: 15}}>
+                            <Pressable onPress={() => navigation.push('NewGroup')} style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
+                                <Image 
+                                    source={icons.header.plusIcon} 
+                                    style={{tintColor: COLORS.bluePill, height: 21, width: 21}}
+                                />
+                                <Text style={{color: 'blue', fontSize: 14, marginLeft: 10}}>Crear Grupo</Text>
+                            </Pressable>
                         </View>
                     )
                 }}

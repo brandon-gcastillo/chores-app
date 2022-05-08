@@ -14,6 +14,7 @@ import Tabs from './navigation/tabs';
 import Activity from './screens/Activity';
 import Group from './screens/Groups/Group';
 import NewActivity from './screens/Activity/NewActivity';
+import NewGroup from './screens/Groups/NewGroup';
 
 // Fonts
 import { FONTS } from './constants'; 
@@ -36,13 +37,14 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator 
             initialRouteName="Tabs"
-            screenOptions={{ headerShown: false }}>
+            screenOptions={{headerShown: false}}>
             <Stack.Screen name="Login" component={Login}/>
             <Stack.Screen name="Tabs" component={Tabs}/>
             <Stack.Screen name="CreateAccount" component={CreateAccount} options={{title: "Crear Cuenta"}}/>
             <Stack.Screen name='Group' component={Group} options={{headerShown: true}}/>
             <Stack.Screen name='Activity' component={Activity} options={{headerShown: true}}/>
-            <Stack.Screen name='NewActivity' component={NewActivity} options={{headerShown: true}}/>
+            <Stack.Screen name='NewActivity' component={NewActivity} options={{headerShown: true, headerTitle: "Nueva Actividad"}}/>
+            <Stack.Screen name="NewGroup" component={NewGroup} options={{headerShown: true, headerTitle: "Nuevo Grupo"}} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

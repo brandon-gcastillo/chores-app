@@ -6,10 +6,14 @@ const icons = {
         activity: require('../assets/icons/activity.png')
     },
     header: {
-        user: require('../assets/icons/user.png')
+        user: require('../assets/icons/user.png'),
+        plusIcon: require('../assets/icons/circle-solid-plus.png')
     },
     groupScreen: {
         editPencil: require('../assets/icons/edit_pencilpng.png')
+    },
+    others: {
+        camera: require('../assets/icons/camera-solid.png')
     }
 }
 
