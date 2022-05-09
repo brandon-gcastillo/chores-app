@@ -36,15 +36,14 @@ export default function App() {
       <SafeAreaProvider>
         <NavigationContainer>
           <Stack.Navigator 
-            initialRouteName="Tabs"
-            screenOptions={{headerShown: false}}>
+            initialRouteName="Tabs">
             <Stack.Screen name="Login" component={Login}/>
-            <Stack.Screen name="Tabs" component={Tabs}/>
-            <Stack.Screen name="CreateAccount" component={CreateAccount} options={{title: "Crear Cuenta"}}/>
-            <Stack.Screen name='Group' component={Group} options={{headerShown: true}}/>
-            <Stack.Screen name='Activity' component={Activity} options={{headerShown: true}}/>
-            <Stack.Screen name='NewActivity' component={NewActivity} options={{headerShown: true, headerTitle: "Nueva Actividad"}}/>
-            <Stack.Screen name="NewGroup" component={NewGroup} options={{headerShown: true, headerTitle: "Nuevo Grupo"}} />
+            <Stack.Screen name="Tabs" component={Tabs} options={{headerShown: false}}/>
+            <Stack.Screen name="CreateAccount" component={CreateAccount} options={{headerTitle: "Crear Cuenta"}}/>
+            <Stack.Screen name='Group' component={Group} options={{headerTitle: "Grupo"}}/>
+            <Stack.Screen name='Activity' component={Activity} />
+            <Stack.Screen name='NewActivity' component={NewActivity} options={{headerTitle: "Nueva Actividad"}}/>
+            <Stack.Screen name="NewGroup" component={NewGroup} options={{headerTitle: "Nuevo Grupo"}} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaProvider>

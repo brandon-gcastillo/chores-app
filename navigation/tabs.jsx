@@ -96,7 +96,7 @@ const Tabs = ({navigation}) => {
                 name='Groups'
                 component={GroupsScreen}
                 options={{
-                    headerShown: true,
+                    headerTitle: 'Grupos',
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'space-between' }}>
                             <Image
