@@ -242,7 +242,7 @@ const UserInit = ({ navigation }) => {
         })
     }
 
-    const getPhotoUrl = () => {
+    const getPhotoUrl = async () => {
         try {
             const url = await Firebase.storageRef.child(`images/profile-pictures/${userStatus.uid}/profile_picture.jpg`).getDownloadURL()
 

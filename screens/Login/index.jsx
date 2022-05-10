@@ -24,13 +24,14 @@ import { COLORS } from '../../constants';
 import Firebase from '../../api/Firebase';
 
 // App Auth Context
-import { useChoresAuth, useChoresAuthUpdateContext } from '../../contexts/ChoresAuthContext';
+import { useChoresAuth, useChoresAuthUpdateContext, useChoresUserContext } from '../../contexts/ChoresAuthContext';
 
 const Login = ({ navigation }) => {
 
     // Auth Context Consumers
-    const [ userStatus, setUserStatus ] = useChoresAuth();
-    const [ isLoggedIn, setIsLoggedIn ] = useChoresAuthUpdateContext();
+    const [userStatus, setUserStatus] = useChoresAuth();
+    const [isLoggedIn, setIsLoggedIn] = useChoresAuthUpdateContext();
+    const [profileInfo, setProfileInfo] = useChoresUserContext();
 
     // AsyncStorage for profile edited
     const { setItem } = useAsyncStorage("@isProfileEdited");
