@@ -14,7 +14,7 @@ import { getHeaderTitle } from '@react-navigation/elements';
 import Home from '../screens/Home';
 import GroupsScreen from '../screens/Groups';
 import Settings from '../screens/Settings';
-import MyHabits from '../screens/MyHabits';
+import User from '../screens/User';
 
 import { COLORS, icons } from '../constants';
 import Constants from 'expo-constants';
@@ -52,7 +52,7 @@ const CustomHeader = (props) => {
     )
 }
 
-const Tabs = ({navigation}) => {
+const Tabs = ({ navigation }) => {
 
     return (
         <Tab.Navigator
@@ -70,30 +70,33 @@ const Tabs = ({navigation}) => {
                 },
             }}
         >
-            <Tab.Screen name='Home' component={Home} options={{
-                headerTitle: "Inicio",
-                tabBarIcon: ({ focused }) => (
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <Image
-                            source={icons.tabs.home}
-                            resizeMode="contain"
-                            style={{
-                                width: 25,
-                                height: 25,
-                                tintColor: focused ? COLORS.btn_tab_primary : COLORS.btn_disabled
-                            }}
-                        />
-                        <Text
-                            style={{
-                                color: focused ? COLORS.btn_tab_primary : COLORS.btn_disabled, fontSize: 12
-                            }}>
-                            Home
-                        </Text>
-                    </View>
-                )
-            }} />
             <Tab.Screen
-                name='Groups'
+                name='Inicio'
+                component={Home}
+                options={{
+                    headerTitle: "Inicio",
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <Image
+                                source={icons.tabs.home}
+                                resizeMode="contain"
+                                style={{
+                                    width: 25,
+                                    height: 25,
+                                    tintColor: focused ? COLORS.btn_tab_primary : COLORS.btn_disabled
+                                }}
+                            />
+                            <Text
+                                style={{
+                                    color: focused ? COLORS.btn_tab_primary : COLORS.btn_disabled, fontSize: 12
+                                }}>
+                                Home
+                            </Text>
+                        </View>
+                    )
+                }} />
+            <Tab.Screen
+                name='Grupos'
                 component={GroupsScreen}
                 options={{
                     headerTitle: 'Grupos',
@@ -117,16 +120,42 @@ const Tabs = ({navigation}) => {
                         </View>
                     ),
                     headerRight: () => (
-                        <View style={{paddingRight: 15}}>
-                            <Pressable onPress={() => navigation.push('NewGroup')} style={{flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
-                                <Image 
-                                    source={icons.header.plusIcon} 
-                                    style={{tintColor: COLORS.bluePill, height: 21, width: 21}}
+                        <View style={{ paddingRight: 15 }}>
+                            <Pressable onPress={() => navigation.push('NewGroup')} style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
+                                <Image
+                                    source={icons.header.plusIcon}
+                                    style={{ tintColor: COLORS.bluePill, height: 21, width: 21 }}
                                 />
-                                <Text style={{color: 'blue', fontSize: 14, marginLeft: 10}}>Crear Grupo</Text>
+                                <Text style={{ color: 'blue', fontSize: 14, marginLeft: 10 }}>Crear Grupo</Text>
                             </Pressable>
                         </View>
                     )
+                }}
+            />
+            <Tab.Screen
+                name='Mi Perfil'
+                component={User}
+                options={{
+                    headerTitle: "Mi Perfil",
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{ alignItems: 'center', justifyContent: 'space-between' }}>
+                            <Image
+                                source={icons.tabs.user}
+                                resizeMode="contain"
+                                style={{
+                                    width: 24,
+                                    height: 24,
+                                    tintColor: focused ? COLORS.btn_tab_primary : COLORS.btn_disabled
+                                }}
+                            />
+                            <Text
+                                style={{
+                                    color: focused ? COLORS.btn_tab_primary : COLORS.btn_disabled, fontSize: 12
+                                }}>
+                                Mi Perfil
+                            </Text>
+                        </View>
+                    ),
                 }}
             />
         </Tab.Navigator>

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
     View,
     Text,
@@ -10,6 +11,7 @@ import { Card } from 'react-native-paper';
 
 import { COLORS } from '../../constants';
 import Constants from 'expo-constants';
+import { useChoresAuth } from '../../contexts/ChoresAuthContext';
 
 const DATA = [
     {
@@ -134,7 +136,15 @@ const Home = ({ navigation }) => {
         return (
             <Item text={item.text} />
         )
-    }
+    };
+
+    const [userStatus, setUserStatus] = useChoresAuth();
+
+    useEffect(() => {
+      console.log(userStatus);
+    
+    }, [userStatus])
+    
 
     return (
         <View style={styles.appContainer}>

@@ -16,7 +16,8 @@ const COLORS = {
     lightBlueMidTone: "#E8EFFF",
     lightBlueLink: "#add8e6",
     blueMidTone: "#656BF4",
-    placeholderColor: "#49454f"
+    placeholderColor: "#49454f",
+    fabBtnColor: "#eaddff"
 }
 
 export default COLORS;

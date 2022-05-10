@@ -9,34 +9,20 @@ import {
     ScrollView,
     Alert
 } from 'react-native';
-import { StackActions } from '@react-navigation/native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TextInput, Divider } from 'react-native-paper';
-import { useAsyncStorage } from '@react-native-async-storage/async-storage';
+import { TextInput } from 'react-native-paper';
 
 // Banner, Styles and Loading Screen
 import Banner from "../../components/Banner";
 import inputStyles from "../../styles/InputStyles";
 import Loading from "../../components/Loading";
-import { COLORS } from '../../constants';
 
 // Login Account API Call
-import Firebase from '../../api/Firebase';
-
-// App Auth Context
-import { useChoresAuth, useChoresAuthUpdateContext } from '../../contexts/ChoresAuthContext';
+import authenticateUser from '../../api/LoginAccount';
+import { COLORS } from '../../constants';
 
 const Login = ({ navigation }) => {
-
-    // Auth Context Consumers
-    const [ userStatus, setUserStatus ] = useChoresAuth();
-    const [ isLoggedIn, setIsLoggedIn ] = useChoresAuthUpdateContext();
-
-    // AsyncStorage for profile edited
-    const { setItem } = useAsyncStorage("@isProfileEdited");
-    const writeItemToStorage = async newValue => {
-        await setItem(newValue);
-    }
 
     const userDetails = {
         email: '',
@@ -57,53 +43,30 @@ const Login = ({ navigation }) => {
     const [secureEntryPass, setSecureEntryPass] = useState(true);
 
     const submitForm = async () => {
-        setLoading(true);
         try {
-            const auth = Firebase.auth;
-            const userCredentials = await auth.signInWithEmailAndPassword(userAccount.email, userAccount.password);
+            const { statusValue, data } = await authenticateUser(userAccount.email, userAccount.password);
 
-            if (!userCredentials.user.emailVerified) {
-                setLoading(false);
+            const loginError = statusValue === 400 || statusValue !== 200 && data.message !== "Login successful" ? true : false;
+
+            if (loginError) {
                 Alert.alert(
-                    "Verifica tu cuenta.",
-                    'Email enviado al correo introducido',
+                    "Inicio de Sesión incorrecto",
+                    'Vuelve a iniciar sesión.',
                     [
                         {
                             text: 'Ok',
                             onPress: () => console.log('')
-                        },
-                        {
-                            text: "Reenviar correo",
-                            onPress: async () => {
-                                await auth.currentUser.reload();
-                                await auth.currentUser.sendEmailVerification();
-                            }
                         }
                     ]
                 )
             } else {
-                setUserStatus(userCredentials.user);
-                setIsLoggedIn(true);
-                await writeItemToStorage(JSON.stringify(true));
+                setLoading(true);
                 setUserAccount(userDetails);
-                setLoading(false);
-                navigation.replace('UserInit');
+                setLoading(false)
+                navigation.navigate('Tabs');
             }
-
         } catch (error) {
-            console.log(error.code);
-            console.log(error.message);
-            setLoading(false);
-            Alert.alert(
-                "Inicio de Sesión incorrecto",
-                'Vuelve a iniciar sesión.',
-                [
-                    {
-                        text: 'Ok',
-                        onPress: () => false
-                    }
-                ]
-            )
+            console.log(error);
         }
     }
 
@@ -113,9 +76,9 @@ const Login = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.screenContainer}>
-            <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps='handled'>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'position'}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                <ScrollView showsVerticalScrollIndicator={false}>
                     {/* Banner  */}
                     <Banner />
                     {/* Form Fields */}
@@ -124,19 +87,16 @@ const Login = ({ navigation }) => {
                             Inicia Sesión
                         </Text>
                         <TextInput
-                            mode='outlined'
                             label='Correo Electrónico'
                             value={userAccount.email}
-                            keyboardType='email-address'
                             autoCapitalize='none'
                             textContentType='emailAddress'
                             style={inputStyles.textInput}
                             onChangeText={(currentText) => handleTextChange('email', currentText)}
-                            left={<TextInput.Icon name='email' color={COLORS.secondary} />}
+                            left={<TextInput.Icon name='email' color={COLORS.secondary}/>}
                             underlineColor={COLORS.secondary}
                         />
                         <TextInput
-                            mode='outlined'
                             label="Contraseña"
                             style={inputStyles.textInput}
                             autoCapitalize="none"
@@ -146,7 +106,7 @@ const Login = ({ navigation }) => {
                             onChangeText={(currentText) => handleTextChange('password', currentText)}
                             right={
                                 <TextInput.Icon name="eye" onPressOut={() => setSecureEntryPass(!secureEntryPass)} onPressIn={() => setSecureEntryPass(!secureEntryPass)} forceTextInputFocus={false}
-                                    color={COLORS.secondary} />
+                                color={COLORS.secondary}/>
                             }
                         />
                         <TouchableOpacity
@@ -154,13 +114,9 @@ const Login = ({ navigation }) => {
                             onPress={() => submitForm()}>
                             <Text style={inputStyles.textStyles}>Entrar</Text>
                         </TouchableOpacity>
-                        <View style={{ alignItems: 'center' }}>
-                            <Divider style={{ height: 1, width: "70%", backgroundColor: "gray", borderRadius: 4, marginTop: 50, marginBottom: 15 }} />
-                            <Text style={{ color: COLORS.btn_primary }} onPress={() => navigation.dispatch(StackActions.replace('CreateAccount'))}>Crea una cuenta si no tienes una.</Text>
-                        </View>
                     </View>
-                </KeyboardAvoidingView>
-            </ScrollView>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     )
 

@@ -43,8 +43,6 @@ const NewGroup = () => {
                 quality: 0.8
             });
 
-            console.log(result);
-
             if (!result.cancelled) setImage(result.uri);
         }
     }
@@ -69,8 +67,6 @@ const NewGroup = () => {
                 quality: 0.8
             });
 
-            console.log(result);
-
             if (!result.cancelled) setImage(result.uri);
         }
     }
@@ -85,6 +81,7 @@ const NewGroup = () => {
             autoComplete: 'off',
             value: titleValue,
             error: titleFieldError,
+            style: styles.textInput.containerSingleLine,
             onChangeText: (text) => handleValue(text, "title"),
             onFocus: () => setTitleFieldError(false)
         },
@@ -98,6 +95,7 @@ const NewGroup = () => {
             placeholder: "Nombre de usuario",
             autoCapitalize: "none",
             error: usersFieldError,
+            style: styles.textInput.containerMultiLine,
             onChangeText: (text) => handleValue(text, "users"),
             onFocus: () => setUsersFieldError(false)
         }
@@ -119,23 +117,17 @@ const NewGroup = () => {
 
     const handleErrors = () => {
         if (
-            (usersValue.length === 0 || usersValue === null) && (titleValue === '' || titleValue == null)
+            (usersValue.length === 0 || usersValue === null) && (titleValue.trim() === '' || titleValue == null)
         ) {
             setTitleFieldError(true);
             setUsersFieldError(true);
-            TextInputProps.inputTitle.error = true;
-            TextInputProps.inputUsers.error = true;
-        } else if (titleValue === '' || titleValue == null) {
+        } else if (titleValue.trim() === '' || titleValue == null) {
             setTitleFieldError(true);
-            TextInputProps.inputTitle.error = true;
         } else if (usersValue.length === 0 || usersValue === null) {
             setUsersFieldError(true);
-            TextInputProps.inputUsers.error = true;
         } else {
             setTitleFieldError(false);
             setUsersFieldError(false);
-            TextInputProps.inputTitle.error = false;
-            TextInputProps.inputUsers.error = false;
         }
     }
 
