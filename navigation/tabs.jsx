@@ -65,7 +65,7 @@ const Tabs = ({ navigation }) => {
                     right: 20,
                     borderRadius: 15,
                     backgroundColor: "#fff",
-                    height: 70,
+                    height: 60,
                     ...styles.shadow,
                 },
             }}

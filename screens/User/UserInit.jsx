@@ -17,7 +17,7 @@ import * as ImagePicker from 'expo-image-picker';
 import Firebase from '../../api/Firebase';
 
 // ChoresAuth Context Providers
-import { useChoresAuth } from '../../contexts/ChoresAuthContext';
+import { useChoresAuth, useChoresUserContext } from '../../contexts/ChoresAuthContext';
 
 // Loading Screen
 import Loading from '../../components/Loading';
@@ -37,6 +37,7 @@ const UserInit = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
 
     const [userStatus, setUserStatus] = useChoresAuth();
+    const [profileInfo, setProfileInfo] = useChoresUserContext();
 
     const [nameValue, setNameValue] = useState("");
     const [nameFieldError, setNameFieldError] = useState(false);
@@ -245,17 +246,23 @@ const UserInit = ({ navigation }) => {
     const getPhotoUrl = async () => {
         try {
             const url = await Firebase.storageRef.child(`images/profile-pictures/${userStatus.uid}/profile_picture.jpg`).getDownloadURL()
-
+            return url;
         } catch (error) {
-            console.log(error.message)
+            console.log(error.message);
         }
     }
 
     const updateProfile = async () => {
         const user = Firebase.auth.currentUser;
         await user.updateProfile({
-            displayName: nameValue + firstNameValue + secondNameValue,
-        })
+            displayName: `${nameValue} ${firstNameValue} ${secondNameValue}`,
+        });
+        const photoUrl = await getPhotoUrl();
+        setProfileInfo({
+            displayName: nameValue + ' ' + firstNameValue,
+            profilePhotoPath: image,
+            photoUrl: photoUrl
+        });
         setUserStatus(user);
     }
 

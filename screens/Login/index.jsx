@@ -83,12 +83,21 @@ const Login = ({ navigation }) => {
                     ]
                 )
             } else {
-                setUserStatus(userCredentials.user);
-                setIsLoggedIn(true);
-                await writeItemToStorage(JSON.stringify(true));
-                setUserAccount(userDetails);
-                setLoading(false);
-                navigation.replace('UserInit');
+                if (profileInfo.profilePhotoPath == "") {
+                    setUserStatus(userCredentials.user);
+                    setIsLoggedIn(true);
+                    await writeItemToStorage(JSON.stringify(true));
+                    setUserAccount(userDetails);
+                    setLoading(false);
+                    navigation.replace('UserInit');
+                } else {
+                    setUserStatus(userCredentials.user);
+                    setIsLoggedIn(true);
+                    await writeItemToStorage(JSON.stringify(true));
+                    setUserAccount(userDetails);
+                    setLoading(false);
+                    navigation.replace('Tabs');
+                }
             }
 
         } catch (error) {

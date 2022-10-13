@@ -22,9 +22,15 @@ export const useChoresUserContext = () => useContext(ChoresUserContext);
 
 export const ChoresAuthProvider = ({ children }) => {
 
+    const initialProfileInfo = {
+        displayName: "",
+        profilePhotoPath: "",
+        photoUrl: ""
+    }
+
     const [userStatus, setUserStatus] = useState({});
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [profileInfo, setProfileInfo] = useState({});
+    const [profileInfo, setProfileInfo] = useState(initialProfileInfo);
 
     return (
         <ChoresAuthContext.Provider value={[userStatus, setUserStatus]}>

@@ -12,7 +12,14 @@ import { FAB, TextInput } from 'react-native-paper';
 
 import * as ImagePicker from 'expo-image-picker';
 
+import Firebase from '../../api/Firebase';
+
+import { useChoresAuth } from '../../contexts/ChoresAuthContext';
+
 const NewGroup = () => {
+
+    // Chores Auth Context
+    const [userStatus, setUserStatus] = useChoresAuth();
 
     const [titleChars, setTitleChars] = useState(0);
     const [titleValue, setTitleValue] = useState("");
@@ -121,13 +128,26 @@ const NewGroup = () => {
         ) {
             setTitleFieldError(true);
             setUsersFieldError(true);
+            return true;
         } else if (titleValue.trim() === '' || titleValue == null) {
             setTitleFieldError(true);
+            return true;
         } else if (usersValue.length === 0 || usersValue === null) {
             setUsersFieldError(true);
+            return true;
         } else {
             setTitleFieldError(false);
             setUsersFieldError(false);
+            return false;
+        }
+    }
+
+    const uploadImage = async () => {
+        
+    }
+
+    const submitForm = () => {
+        if (!handleErrors()) {
         }
     }
 
